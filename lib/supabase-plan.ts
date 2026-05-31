@@ -33,7 +33,7 @@ export async function upsertMealPlanItem(
   slot: MealSlot,
   mealId: string,
 ) {
-  const id = `${day.slice(0, 3).toLowerCase()}-${slot.toLowerCase()}`;
+  const id = `${day.toLowerCase()}-${slot.toLowerCase()}`;
 
   const { data, error } = await supabase
     .from("meal_plan_items")
@@ -58,7 +58,7 @@ export async function upsertMealPlanItem(
 }
 
 export async function deleteMealPlanItem(day: string, slot: MealSlot) {
-  const id = `${day.slice(0, 3).toLowerCase()}-${slot.toLowerCase()}`;
+  const id = `${day.toLowerCase()}-${slot.toLowerCase()}`;
 
   const { error } = await supabase.from("meal_plan_items").delete().eq("id", id);
 
