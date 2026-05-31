@@ -35,12 +35,22 @@ export async function upsertMealPlanItem(
 ) {
   const id = `${day.toLowerCase()}-${slot.toLowerCase()}`;
 
-  const { error } = await supabase.from("meal_plan_items").upsert({
-    id,
-    day,
-    slot,
-    meal_id: mealId,
-  });
+  const { data, error } = await supabase
+    .from("meal_plan_items")
+    .upsert(
+      {
+        id,
+        day,
+        slot,
+        meal_id: mealId,
+      },
+      {
+        onConflict: "id",
+      },
+    )
+    .select();
+
+  console.log("Supabase upsert result:", { data, error });
 
   if (error) {
     throw error;

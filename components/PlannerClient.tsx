@@ -67,7 +67,8 @@ export function PlannerClient({
         await upsertMealPlanItem(day, slot, mealId);
       }
     } catch (error) {
-      console.error("Failed to save meal plan item:", error);
+    alert("Failed to save meal plan item. Check the browser console.");
+    console.error("Failed to save meal plan item:", error);
     }
   }
 
