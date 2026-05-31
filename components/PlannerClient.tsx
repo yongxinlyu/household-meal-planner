@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { MealPlanItem, MealSlot } from "@/data/mealPlan";
 import type { Meal } from "@/data/meals";
 import { DayPlanCard } from "@/components/DayPlanCard";
+
+const STORAGE_KEY = "meal-planner-plan-items";
 
 type PlannerClientProps = {
   days: string[];
@@ -18,6 +20,18 @@ export function PlannerClient({
 }: PlannerClientProps) {
   const [planItems, setPlanItems] = useState<MealPlanItem[]>(initialPlanItems);
 
+  useEffect(() => {
+    const savedPlan = window.localStorage.getItem(STORAGE_KEY);
+
+    if (savedPlan) {
+      setPlanItems(JSON.parse(savedPlan));
+    }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(planItems));
+  }, [planItems]);
+
   function updatePlanItem(day: string, slot: MealSlot, mealId: string) {
     setPlanItems((currentItems) => {
       const existingItem = currentItems.find(
@@ -31,11 +45,14 @@ export function PlannerClient({
       }
 
       if (existingItem) {
+        const selectedMeal = meals.find((meal) => meal.id === mealId);
+
         return currentItems.map((item) =>
           item.id === existingItem.id
             ? {
                 ...item,
                 mealId,
+                cook: selectedMeal?.defaultCook ?? item.cook,
               }
             : item,
         );
@@ -54,6 +71,10 @@ export function PlannerClient({
         },
       ];
     });
+  }
+
+  function resetPlan() {
+    setPlanItems(initialPlanItems);
   }
 
   return (
@@ -83,6 +104,14 @@ export function PlannerClient({
           <p className="mt-1 text-sm text-orange-800">Cooking days</p>
         </div>
       </section>
+
+      <button
+        type="button"
+        onClick={resetPlan}
+        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm"
+      >
+        Reset to sample plan
+      </button>
 
       <section className="space-y-4">
         {days.map((day) => (
