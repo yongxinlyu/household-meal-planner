@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { DayPlanCard } from "@/components/DayPlanCard";
 import type { MealPlanItem, MealSlot } from "@/data/mealPlan";
 import type { Meal } from "@/data/meals";
-import { DayPlanCard } from "@/components/DayPlanCard";
-
-const STORAGE_KEY = "meal-planner-plan-items";
+import {
+  deleteMealPlanItem,
+  upsertMealPlanItem,
+} from "@/lib/supabase-plan";
 
 type PlannerClientProps = {
   days: string[];
@@ -18,25 +20,9 @@ export function PlannerClient({
   initialPlanItems,
   meals,
 }: PlannerClientProps) {
-const [planItems, setPlanItems] = useState<MealPlanItem[]>(() => {
-  if (typeof window === "undefined") {
-    return initialPlanItems;
-  }
+  const [planItems, setPlanItems] = useState<MealPlanItem[]>(initialPlanItems);
 
-  const savedPlan = window.localStorage.getItem(STORAGE_KEY);
-
-  if (!savedPlan) {
-    return initialPlanItems;
-  }
-
-  return JSON.parse(savedPlan) as MealPlanItem[];
-});
-
-  useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(planItems));
-  }, [planItems]);
-
-  function updatePlanItem(day: string, slot: MealSlot, mealId: string) {
+  async function updatePlanItem(day: string, slot: MealSlot, mealId: string) {
     setPlanItems((currentItems) => {
       const existingItem = currentItems.find(
         (item) => item.day === day && item.slot === slot,
@@ -48,9 +34,9 @@ const [planItems, setPlanItems] = useState<MealPlanItem[]>(() => {
         );
       }
 
-      if (existingItem) {
-        const selectedMeal = meals.find((meal) => meal.id === mealId);
+      const selectedMeal = meals.find((meal) => meal.id === mealId);
 
+      if (existingItem) {
         return currentItems.map((item) =>
           item.id === existingItem.id
             ? {
@@ -61,8 +47,6 @@ const [planItems, setPlanItems] = useState<MealPlanItem[]>(() => {
             : item,
         );
       }
-
-      const selectedMeal = meals.find((meal) => meal.id === mealId);
 
       return [
         ...currentItems,
@@ -75,6 +59,16 @@ const [planItems, setPlanItems] = useState<MealPlanItem[]>(() => {
         },
       ];
     });
+
+    try {
+      if (!mealId) {
+        await deleteMealPlanItem(day, slot);
+      } else {
+        await upsertMealPlanItem(day, slot, mealId);
+      }
+    } catch (error) {
+      console.error("Failed to save meal plan item:", error);
+    }
   }
 
   function resetPlan() {
@@ -89,7 +83,7 @@ const [planItems, setPlanItems] = useState<MealPlanItem[]>(() => {
           Meal Planner
         </h1>
         <p className="mt-2 text-sm text-slate-600">
-          Plan meals, assign cooking, and build your grocery list.
+          Plan meals and build your grocery list.
         </p>
       </section>
 
@@ -114,7 +108,7 @@ const [planItems, setPlanItems] = useState<MealPlanItem[]>(() => {
         onClick={resetPlan}
         className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm"
       >
-        Reset to sample plan
+        Reset to shared plan
       </button>
 
       <section className="space-y-4">

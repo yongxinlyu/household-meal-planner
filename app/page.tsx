@@ -1,6 +1,6 @@
 import { PlannerClient } from "@/components/PlannerClient";
-import { mealPlanItems } from "@/data/mealPlan";
-import { meals } from "@/data/meals";
+import { getMeals } from "@/lib/supabase-meals";
+import { getMealPlanItems } from "@/lib/supabase-plan";
 
 const days = [
   "Monday",
@@ -12,7 +12,10 @@ const days = [
   "Sunday",
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const meals = await getMeals();
+  const mealPlanItems = await getMealPlanItems();
+
   return (
     <PlannerClient
       days={days}
