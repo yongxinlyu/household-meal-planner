@@ -1,9 +1,12 @@
 export const dynamic = "force-dynamic";
 
 import { GroceriesClient } from "@/components/GroceriesClient";
-import { mealPlanItems } from "@/data/mealPlan";
-import { meals } from "@/data/meals";
+import { getMeals } from "@/lib/supabase-meals";
+import { getMealPlanItems } from "@/lib/supabase-plan";
 
-export default function GroceriesPage() {
+export default async function GroceriesPage() {
+  const meals = await getMeals();
+  const mealPlanItems = await getMealPlanItems();
+
   return <GroceriesClient initialPlanItems={mealPlanItems} meals={meals} />;
 }
