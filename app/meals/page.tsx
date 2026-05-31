@@ -1,3 +1,6 @@
+import { MealCard } from "@/components/MealCard";
+import { meals } from "@/data/meals";
+
 export default function MealsPage() {
   return (
     <main className="space-y-6">
@@ -11,13 +14,10 @@ export default function MealsPage() {
         </p>
       </section>
 
-      <section className="rounded-3xl border border-dashed border-slate-300 bg-white p-6 text-center">
-        <p className="text-lg font-semibold text-slate-900">
-          No meals yet
-        </p>
-        <p className="mt-2 text-sm text-slate-600">
-          Soon you’ll be able to add meals and ingredients here.
-        </p>
+      <section className="space-y-4">
+        {meals.map((meal) => (
+          <MealCard key={meal.id} meal={meal} />
+        ))}
       </section>
     </main>
   );
