@@ -1,7 +1,9 @@
 import { MealCard } from "@/components/MealCard";
-import { meals } from "@/data/meals";
+import { getMeals } from "@/lib/supabase-meals";
 
-export default function MealsPage() {
+export default async function MealsPage() {
+  const meals = await getMeals();
+
   return (
     <main className="space-y-6">
       <section>

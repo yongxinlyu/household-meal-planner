@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { meals } from "@/data/meals";
+import { getMealById } from "@/lib/supabase-meals";
 
 type MealDetailsPageProps = {
   params: Promise<{
@@ -12,8 +12,7 @@ export default async function MealDetailsPage({
   params,
 }: MealDetailsPageProps) {
   const { mealId } = await params;
-
-  const meal = meals.find((item) => item.id === mealId);
+  const meal = await getMealById(mealId);
 
   if (!meal) {
     notFound();
