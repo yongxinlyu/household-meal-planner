@@ -1,13 +1,19 @@
 import type { Meal } from "@/data/meals";
-import type { MealPlanItem } from "@/data/mealPlan";
+import type { MealPlanItem, MealSlot } from "@/data/mealPlan";
 
 type DayPlanCardProps = {
   day: string;
   planItems: MealPlanItem[];
   meals: Meal[];
+  onMealChange?: (day: string, slot: MealSlot, mealId: string) => void;
 };
 
-export function DayPlanCard({ day, planItems, meals }: DayPlanCardProps) {
+export function DayPlanCard({
+  day,
+  planItems,
+  meals,
+  onMealChange,
+}: DayPlanCardProps) {
   const lunch = planItems.find((item) => item.slot === "Lunch");
   const dinner = planItems.find((item) => item.slot === "Dinner");
 
@@ -16,9 +22,39 @@ export function DayPlanCard({ day, planItems, meals }: DayPlanCardProps) {
     return meals.find((meal) => meal.id === mealId)?.name ?? "Unknown meal";
   }
 
-  function getCook(mealId?: string, cook?: string) {
-    if (!mealId) return "";
-    return `Cook: ${cook}`;
+  function renderSlot(slot: MealSlot, planItem?: MealPlanItem) {
+    return (
+      <div className="rounded-2xl bg-slate-50 p-4">
+        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+          {slot}
+        </p>
+
+        {onMealChange ? (
+          <select
+            value={planItem?.mealId ?? ""}
+            onChange={(event) => onMealChange(day, slot, event.target.value)}
+            className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-900"
+          >
+            <option value="">Not planned</option>
+            {meals.map((meal) => (
+              <option key={meal.id} value={meal.id}>
+                {meal.name}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <p className="mt-1 font-medium text-slate-900">
+            {getMealName(planItem?.mealId)}
+          </p>
+        )}
+
+        {planItem && (
+          <p className="mt-2 text-sm text-slate-500">
+            Cook: {planItem.cook}
+          </p>
+        )}
+      </div>
+    );
   }
 
   return (
@@ -26,33 +62,8 @@ export function DayPlanCard({ day, planItems, meals }: DayPlanCardProps) {
       <h2 className="text-lg font-semibold text-slate-950">{day}</h2>
 
       <div className="mt-4 space-y-3">
-        <div className="rounded-2xl bg-slate-50 p-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            Lunch
-          </p>
-          <p className="mt-1 font-medium text-slate-900">
-            {getMealName(lunch?.mealId)}
-          </p>
-          {lunch && (
-            <p className="mt-1 text-sm text-slate-500">
-              {getCook(lunch.mealId, lunch.cook)}
-            </p>
-          )}
-        </div>
-
-        <div className="rounded-2xl bg-slate-50 p-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            Dinner
-          </p>
-          <p className="mt-1 font-medium text-slate-900">
-            {getMealName(dinner?.mealId)}
-          </p>
-          {dinner && (
-            <p className="mt-1 text-sm text-slate-500">
-              {getCook(dinner.mealId, dinner.cook)}
-            </p>
-          )}
-        </div>
+        {renderSlot("Lunch", lunch)}
+        {renderSlot("Dinner", dinner)}
       </div>
     </article>
   );

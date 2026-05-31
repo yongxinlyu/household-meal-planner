@@ -1,0 +1,100 @@
+"use client";
+
+import { useState } from "react";
+import type { MealPlanItem, MealSlot } from "@/data/mealPlan";
+import type { Meal } from "@/data/meals";
+import { DayPlanCard } from "@/components/DayPlanCard";
+
+type PlannerClientProps = {
+  days: string[];
+  initialPlanItems: MealPlanItem[];
+  meals: Meal[];
+};
+
+export function PlannerClient({
+  days,
+  initialPlanItems,
+  meals,
+}: PlannerClientProps) {
+  const [planItems, setPlanItems] = useState<MealPlanItem[]>(initialPlanItems);
+
+  function updatePlanItem(day: string, slot: MealSlot, mealId: string) {
+    setPlanItems((currentItems) => {
+      const existingItem = currentItems.find(
+        (item) => item.day === day && item.slot === slot,
+      );
+
+      if (!mealId) {
+        return currentItems.filter(
+          (item) => !(item.day === day && item.slot === slot),
+        );
+      }
+
+      if (existingItem) {
+        return currentItems.map((item) =>
+          item.id === existingItem.id
+            ? {
+                ...item,
+                mealId,
+              }
+            : item,
+        );
+      }
+
+      const selectedMeal = meals.find((meal) => meal.id === mealId);
+
+      return [
+        ...currentItems,
+        {
+          id: `${day.toLowerCase()}-${slot.toLowerCase()}`,
+          day,
+          slot,
+          mealId,
+          cook: selectedMeal?.defaultCook ?? "Either",
+        },
+      ];
+    });
+  }
+
+  return (
+    <main className="space-y-6">
+      <section>
+        <p className="text-sm font-medium text-emerald-700">This week</p>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
+          Meal Planner
+        </h1>
+        <p className="mt-2 text-sm text-slate-600">
+          Plan meals, assign cooking, and build your grocery list.
+        </p>
+      </section>
+
+      <section className="grid grid-cols-2 gap-3">
+        <div className="rounded-3xl bg-emerald-50 p-5">
+          <p className="text-2xl font-bold text-emerald-900">
+            {planItems.length}
+          </p>
+          <p className="mt-1 text-sm text-emerald-800">Meals planned</p>
+        </div>
+
+        <div className="rounded-3xl bg-orange-50 p-5">
+          <p className="text-2xl font-bold text-orange-900">
+            {new Set(planItems.map((item) => item.day)).size}
+          </p>
+          <p className="mt-1 text-sm text-orange-800">Cooking days</p>
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        {days.map((day) => (
+          <DayPlanCard
+            key={day}
+            day={day}
+            meals={meals}
+            planItems={planItems.filter((item) => item.day === day)}
+            onMealChange={updatePlanItem}
+          />
+        ))}
+      </section>
+    </main>
+  );
+}
