@@ -24,7 +24,7 @@ export async function getMealPlanItems(): Promise<MealPlanItem[]> {
     day: item.day,
     slot: item.slot,
     mealId: item.meal_id,
-    cook: "Either",
+    cook: "Yongxin",
   }));
 }
 

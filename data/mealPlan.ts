@@ -5,29 +5,29 @@ export type MealPlanItem = {
   day: string;
   slot: MealSlot;
   mealId: string;
-  cook: "You" | "Partner" | "Either";
+  cook: "Yongxin" | "Sa" ;
 };
 
 export const mealPlanItems: MealPlanItem[] = [
   {
-    id: "mon-dinner",
+    id: "monday-dinner",
     day: "Monday",
     slot: "Dinner",
     mealId: "chicken-curry",
-    cook: "Partner",
+    cook: "Sa",
   },
   {
-    id: "tue-lunch",
+    id: "tuesday-lunch",
     day: "Tuesday",
     slot: "Lunch",
     mealId: "tuna-salad",
-    cook: "You",
+    cook: "Yongxin",
   },
   {
-    id: "wed-dinner",
+    id: "wednesday-dinner",
     day: "Wednesday",
     slot: "Dinner",
     mealId: "tomato-pasta",
-    cook: "Either",
+    cook: "Sa",
   },
 ];

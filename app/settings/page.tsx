@@ -16,11 +16,11 @@ export default function SettingsPage() {
 
         <div className="mt-4 space-y-3">
           <div className="rounded-2xl bg-slate-50 p-4">
-            <p className="font-medium text-slate-900">You</p>
+            <p className="font-medium text-slate-900">Yongxin</p>
           </div>
 
           <div className="rounded-2xl bg-slate-50 p-4">
-            <p className="font-medium text-slate-900">Partner</p>
+            <p className="font-medium text-slate-900">Sa</p>
           </div>
         </div>
       </section>

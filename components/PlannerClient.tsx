@@ -55,7 +55,7 @@ export function PlannerClient({
           day,
           slot,
           mealId,
-          cook: selectedMeal?.defaultCook ?? "Either",
+          cook: selectedMeal?.defaultCook ?? "Yongxin",
         },
       ];
     });

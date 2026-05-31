@@ -8,7 +8,7 @@ export type Ingredient = {
 export type Meal = {
   id: string;
   name: string;
-  defaultCook: "You" | "Partner" | "Either";
+  defaultCook: "Yongxin" | "Sa" ;
   defaultServings: number;
   tags: string[];
   ingredients: Ingredient[];
@@ -18,7 +18,7 @@ export const meals: Meal[] = [
   {
     id: "chicken-curry",
     name: "Chicken Curry",
-    defaultCook: "Partner",
+    defaultCook: "Sa",
     defaultServings: 4,
     tags: ["Dinner", "Comfort food"],
     ingredients: [
@@ -31,7 +31,7 @@ export const meals: Meal[] = [
   {
     id: "tuna-salad",
     name: "Tuna Salad",
-    defaultCook: "You",
+    defaultCook: "Yongxin",
     defaultServings: 2,
     tags: ["Lunch", "Quick"],
     ingredients: [
@@ -44,7 +44,7 @@ export const meals: Meal[] = [
   {
     id: "tomato-pasta",
     name: "Tomato Pasta",
-    defaultCook: "Either",
+    defaultCook: "Sa",
     defaultServings: 3,
     tags: ["Dinner", "Vegetarian"],
     ingredients: [

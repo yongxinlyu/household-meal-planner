@@ -4,7 +4,7 @@ import type { Meal } from "@/data/meals";
 type MealRow = {
   id: string;
   name: string;
-  default_cook: "You" | "Partner" | "Either";
+  default_cook: "Yongxin" | "Sa";
   default_servings: number;
   tags: string[];
   meal_ingredients: {
