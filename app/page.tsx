@@ -1,3 +1,17 @@
+import { DayPlanCard } from "@/components/DayPlanCard";
+import { mealPlanItems } from "@/data/mealPlan";
+import { meals } from "@/data/meals";
+
+const days = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+
 export default function HomePage() {
   return (
     <main className="space-y-6">
@@ -11,36 +25,29 @@ export default function HomePage() {
         </p>
       </section>
 
-      <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-950">Today</h2>
-
-        <div className="mt-4 space-y-3">
-          <div className="rounded-2xl bg-slate-50 p-4">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-              Lunch
-            </p>
-            <p className="mt-1 font-medium text-slate-900">Not planned yet</p>
-          </div>
-
-          <div className="rounded-2xl bg-slate-50 p-4">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-              Dinner
-            </p>
-            <p className="mt-1 font-medium text-slate-900">Not planned yet</p>
-          </div>
-        </div>
-      </section>
-
       <section className="grid grid-cols-2 gap-3">
         <div className="rounded-3xl bg-emerald-50 p-5">
-          <p className="text-2xl font-bold text-emerald-900">0</p>
+          <p className="text-2xl font-bold text-emerald-900">
+            {mealPlanItems.length}
+          </p>
           <p className="mt-1 text-sm text-emerald-800">Meals planned</p>
         </div>
 
         <div className="rounded-3xl bg-orange-50 p-5">
-          <p className="text-2xl font-bold text-orange-900">0</p>
-          <p className="mt-1 text-sm text-orange-800">Grocery items</p>
+          <p className="text-2xl font-bold text-orange-900">3</p>
+          <p className="mt-1 text-sm text-orange-800">Cooking days</p>
         </div>
+      </section>
+
+      <section className="space-y-4">
+        {days.map((day) => (
+          <DayPlanCard
+            key={day}
+            day={day}
+            meals={meals}
+            planItems={mealPlanItems.filter((item) => item.day === day)}
+          />
+        ))}
       </section>
     </main>
   );
