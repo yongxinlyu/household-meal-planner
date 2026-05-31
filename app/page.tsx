@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { PlannerClient } from "@/components/PlannerClient";
 import { getMeals } from "@/lib/supabase-meals";
 import { getMealPlanItems } from "@/lib/supabase-plan";

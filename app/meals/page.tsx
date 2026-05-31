@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { MealCard } from "@/components/MealCard";
 import { getMeals } from "@/lib/supabase-meals";
 

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { GroceriesClient } from "@/components/GroceriesClient";
 import { mealPlanItems } from "@/data/mealPlan";
 import { meals } from "@/data/meals";
