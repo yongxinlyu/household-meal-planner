@@ -72,10 +72,6 @@ export function PlannerClient({
     }
   }
 
-  function resetPlan() {
-    setPlanItems(initialPlanItems);
-  }
-
   return (
     <main className="space-y-6">
       <section>
@@ -103,14 +99,6 @@ export function PlannerClient({
           <p className="mt-1 text-sm text-orange-800">Cooking days</p>
         </div>
       </section>
-
-      <button
-        type="button"
-        onClick={resetPlan}
-        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm"
-      >
-        Reset to shared plan
-      </button>
 
       <section className="space-y-4">
         {days.map((day) => (
