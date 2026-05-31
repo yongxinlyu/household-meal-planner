@@ -18,15 +18,19 @@ export function PlannerClient({
   initialPlanItems,
   meals,
 }: PlannerClientProps) {
-  const [planItems, setPlanItems] = useState<MealPlanItem[]>(initialPlanItems);
+const [planItems, setPlanItems] = useState<MealPlanItem[]>(() => {
+  if (typeof window === "undefined") {
+    return initialPlanItems;
+  }
 
-  useEffect(() => {
-    const savedPlan = window.localStorage.getItem(STORAGE_KEY);
+  const savedPlan = window.localStorage.getItem(STORAGE_KEY);
 
-    if (savedPlan) {
-      setPlanItems(JSON.parse(savedPlan));
-    }
-  }, []);
+  if (!savedPlan) {
+    return initialPlanItems;
+  }
+
+  return JSON.parse(savedPlan) as MealPlanItem[];
+});
 
   useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(planItems));

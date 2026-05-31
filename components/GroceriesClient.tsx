@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GroceryCategory } from "@/components/GroceryCategory";
 import type { MealPlanItem } from "@/data/mealPlan";
 import type { Meal } from "@/data/meals";
@@ -20,15 +20,19 @@ export function GroceriesClient({
   initialPlanItems,
   meals,
 }: GroceriesClientProps) {
-  const [planItems, setPlanItems] = useState<MealPlanItem[]>(initialPlanItems);
+const [planItems] = useState<MealPlanItem[]>(() => {
+  if (typeof window === "undefined") {
+    return initialPlanItems;
+  }
 
-  useEffect(() => {
-    const savedPlan = window.localStorage.getItem(STORAGE_KEY);
+  const savedPlan = window.localStorage.getItem(STORAGE_KEY);
 
-    if (savedPlan) {
-      setPlanItems(JSON.parse(savedPlan));
-    }
-  }, []);
+  if (!savedPlan) {
+    return initialPlanItems;
+  }
+
+  return JSON.parse(savedPlan) as MealPlanItem[];
+});
 
   const groceryItems = generateGroceryList(planItems, meals);
   const groupedGroceries = groupGroceriesByCategory(groceryItems);
