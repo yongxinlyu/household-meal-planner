@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { MealCard } from "@/components/MealCard";
+import AddRecipeModal from "@/components/AddRecipeModal";
 import type { Cook, Meal } from "@/data/meals";
 import { getMeals } from "@/lib/supabase-meals";
 
@@ -43,13 +44,19 @@ export default async function MealsPage() {
   return (
     <main className="space-y-6">
       <section>
-        <p className="text-lg font-semibold text-emerald-700">Meal library</p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
-          Meals
-        </h1>
-        <p className="mt-2 text-sm text-slate-600">
-          Save meals your household cooks often.
-        </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-lg font-semibold text-emerald-700">Meal library</p>
+            <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
+              Meals
+            </h1>
+            <p className="mt-2 text-sm text-slate-600">
+              Save meals your household cooks often.
+            </p>
+          </div>
+
+          <AddRecipeModal />
+        </div>
       </section>
 
       <section className="space-y-6">
