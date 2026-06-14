@@ -66,3 +66,14 @@ export async function deleteMealPlanItem(day: string, slot: MealSlot) {
     throw error;
   }
 }
+
+export async function deleteAllMealPlanItems() {
+  const { error } = await supabase
+    .from("meal_plan_items")
+    .delete()
+    .in("slot", ["Lunch", "Dinner"]);
+
+  if (error) {
+    throw error;
+  }
+}

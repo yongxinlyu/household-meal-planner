@@ -5,6 +5,7 @@ import { DayPlanCard } from "@/components/DayPlanCard";
 import type { MealPlanItem, MealSlot } from "@/data/mealPlan";
 import type { Meal } from "@/data/meals";
 import {
+  deleteAllMealPlanItems,
   deleteMealPlanItem,
   upsertMealPlanItem,
 } from "@/lib/supabase-plan";
@@ -67,21 +68,44 @@ export function PlannerClient({
         await upsertMealPlanItem(day, slot, mealId);
       }
     } catch (error) {
-    alert("Failed to save meal plan item. Check the browser console.");
-    console.error("Failed to save meal plan item:", error);
+      alert("Failed to save meal plan item. Check the browser console.");
+      console.error("Failed to save meal plan item:", error);
+    }
+  }
+
+  async function resetPlanner() {
+    setPlanItems([]);
+
+    try {
+      await deleteAllMealPlanItems();
+    } catch (error) {
+      alert("Failed to reset the meal planner. Check the browser console.");
+      console.error("Failed to reset meal planner:", error);
     }
   }
 
   return (
     <main className="space-y-6">
       <section>
-        <p className="text-sm font-medium text-emerald-700">This week</p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
-          Meal Planner
-        </h1>
-        <p className="mt-2 text-sm text-slate-600">
-          Plan meals and build your grocery list.
-        </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-emerald-700">This week</p>
+            <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
+              Meal Planner
+            </h1>
+            <p className="mt-2 text-sm text-slate-600">
+              Plan meals and build your grocery list.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={resetPlanner}
+            className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
+          >
+            Reset planner
+          </button>
+        </div>
       </section>
 
       <section className="grid grid-cols-2 gap-3">
