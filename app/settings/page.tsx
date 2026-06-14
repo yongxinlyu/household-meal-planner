@@ -2,7 +2,7 @@ export default function SettingsPage() {
   return (
     <main className="space-y-6">
       <section>
-        <p className="text-sm font-medium text-emerald-700">Household</p>
+        <p className="text-lg font-semibold text-emerald-700">Household</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
           Settings
         </h1>

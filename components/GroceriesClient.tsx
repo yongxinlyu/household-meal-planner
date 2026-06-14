@@ -23,7 +23,7 @@ export function GroceriesClient({
   return (
     <main className="space-y-6">
       <section>
-        <p className="text-sm font-medium text-emerald-700">Shopping mode</p>
+        <p className="text-lg font-semibold text-emerald-700">Shopping mode</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950">
           Groceries
         </h1>
