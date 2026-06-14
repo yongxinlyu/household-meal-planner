@@ -39,22 +39,6 @@ export function MealCard({ meal }: MealCardProps) {
           ))}
         </div>
 
-        <div className="mt-4 border-t border-slate-100 pt-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            Ingredients
-          </p>
-
-          <ul className="mt-2 space-y-1 text-sm text-slate-700">
-            {meal.ingredients.slice(0, 3).map((ingredient) => (
-              <li key={ingredient.name}>
-                {ingredient.name}{" "}
-                <span className="text-slate-400">
-                  {ingredient.quantity} {ingredient.unit}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
       </article>
     </Link>
   );
