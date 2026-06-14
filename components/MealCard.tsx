@@ -29,6 +29,10 @@ export function MealCard({ meal }: MealCardProps) {
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
+          <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+            {meal.style}
+          </span>
+
           {meal.tags.map((tag) => (
             <span
               key={tag}
