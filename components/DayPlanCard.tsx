@@ -17,10 +17,32 @@ export function DayPlanCard({
   const lunch = planItems.find((item) => item.slot === "Lunch");
   const dinner = planItems.find((item) => item.slot === "Dinner");
 
-  function getMealName(mealId?: string) {
-    if (!mealId) return "Not planned";
-    return meals.find((meal) => meal.id === mealId)?.name ?? "Unknown meal";
+  function getMeal(mealId?: string) {
+    if (!mealId) return null;
+    return meals.find((meal) => meal.id === mealId) ?? null;
   }
+
+  const mealsByCook = meals.reduce(
+    (groups, meal) => {
+      if (!groups[meal.defaultCook]) {
+        groups[meal.defaultCook] = [];
+      }
+
+      groups[meal.defaultCook].push(meal);
+      return groups;
+    },
+    {} as Record<string, Meal[]>,
+  );
+
+  const sortedMealsByCook = Object.fromEntries(
+    Object.entries(mealsByCook).map(([cook, cookMeals]) => [
+      cook,
+      [...cookMeals].sort((leftMeal, rightMeal) =>
+        leftMeal.style.localeCompare(rightMeal.style) ||
+        leftMeal.name.localeCompare(rightMeal.name),
+      ),
+    ]),
+  ) as Record<string, Meal[]>;
 
   function renderSlot(slot: MealSlot, planItem?: MealPlanItem) {
     return (
@@ -36,21 +58,25 @@ export function DayPlanCard({
             className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-900"
           >
             <option value="">Not planned</option>
-            {meals.map((meal) => (
-              <option key={meal.id} value={meal.id}>
-                {meal.name}
-              </option>
+            {Object.entries(sortedMealsByCook).map(([cook, cookMeals]) => (
+              <optgroup key={cook} label={cook}>
+                {cookMeals.map((meal) => (
+                  <option key={meal.id} value={meal.id}>
+                    {meal.style} · {meal.name}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
         ) : (
           <p className="mt-1 font-medium text-slate-900">
-            {getMealName(planItem?.mealId)}
+            {getMeal(planItem?.mealId)?.name ?? "Not planned"}
           </p>
         )}
 
-        {planItem && (
+        {getMeal(planItem?.mealId) && (
           <p className="mt-2 text-sm text-slate-500">
-            Cook: {planItem.cook}
+            Cook: {getMeal(planItem?.mealId)?.defaultCook}
           </p>
         )}
       </div>

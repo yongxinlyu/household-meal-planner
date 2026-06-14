@@ -19,6 +19,7 @@ export type Meal = {
   id: string;
   name: string;
   defaultCook: Cook;
+  style: string;
   defaultServings: number;
   tags: string[];
   ingredients: Ingredient[];

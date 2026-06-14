@@ -5,6 +5,7 @@ type MealRow = {
   id: string;
   name: string;
   default_cook: "Yongxin" | "Sa";
+  style: string;
   default_servings: number;
   tags: string[];
   meal_ingredients: {
@@ -23,6 +24,7 @@ export async function getMeals(): Promise<Meal[]> {
       id,
       name,
       default_cook,
+      style,
       default_servings,
       tags,
       meal_ingredients (
@@ -44,6 +46,7 @@ export async function getMeals(): Promise<Meal[]> {
     id: meal.id,
     name: meal.name,
     defaultCook: meal.default_cook,
+    style: meal.style,
     defaultServings: meal.default_servings,
     tags: meal.tags,
     ingredients: meal.meal_ingredients.map((ingredient) => ({
